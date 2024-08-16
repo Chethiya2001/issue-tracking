@@ -9,6 +9,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssuesSchema } from "@/app/validationSchemas";
 import z from "zod";
+import ErrorMeassage from "@/app/components/ErrorMeassage";
 
 
 type IssueFprm = z.infer<typeof createIssuesSchema>;
@@ -27,13 +28,10 @@ const NewIsuuePage = () => {
     return (
         <div className="max-w-xl">
 
-            {error &&
-                <Callout.Root color="red" className="mb-5">
-                    <Callout.Text>
-                        {error}
-                    </Callout.Text>
-                </Callout.Root>
-            }
+            <ErrorMeassage>
+                {errors.title?.message}
+            </ErrorMeassage>
+
             <form className=' space-y-3'
                 onSubmit={handleSubmit((data) => {
                     try {
@@ -50,9 +48,13 @@ const NewIsuuePage = () => {
                     <TextField.Slot>
                     </TextField.Slot>
                 </TextField.Root>
-                {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+                <ErrorMeassage>
+                    {errors.title?.message}
+                </ErrorMeassage>
                 <Controller name="description" control={control} render={({ field }) => <SimpleMDE placeholder="Description…"{...field} />} />
-                {errors.description && <p className="text-red-500">{errors.description.message}</p>}
+                <ErrorMeassage>
+                    {errors.description?.message}
+                </ErrorMeassage>
                 <Button>Submit New Issue</Button>
             </form>
         </div>
